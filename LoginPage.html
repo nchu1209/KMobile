@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     <title>Longhorn Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+    <script type="text/javascript">
+        function getInfo() {
+            var email = document.getElementById("email").value;
+            $.ajax({
+                type: "POST",
+                url: "CustomersWebservice.asmx/LoginStructure",
+                data: "{'email': '" + escape(email) + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var Login = response.d;
+                    if(exam.Correct = true){
+                        $.each(Login, function(index, exam) {
+                            document.cookie = exam.CustomerNumber;
+                            $('#output').append(document.cookie);
+                        })
+                    };
+                    //add content
+
+                },
+                failure: function (msg) {
+                    //$('#outputtest').append("Please enter a valid email address")
+                    alert("error")
+                }
+
+            });
+        }
+
+   
+        function getLogin() {
+            var email = document.getElementById("email").value;
+            //"victoria@aool.com"
+            var password = document.getElementById("password").value;
+            //"nothing"
+            $.ajax({
+                type: "POST",
+                url: "CustomersWebservice.asmx/CheckLoginFinal",
+                data: "{'email': '" + escape(email) + "', 'password': '" + escape(password) + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var CNumber = response.d;
+                    if (CNumber === "") {
+                        alert("Incorrect username and password combination");
+
+                    } else {
+                        document.cookie = CNumber;
+                        //document.write(CNumber);
+                        window.location = "http://localhost:52941/CustomerHome.html"
+                    }
+                    //add content
+
+
+
+                },
+                failure: function (msg) {
+                    //$('#outputtest').append("Please enter a valid email address")
+                    alert("error");
+                }
+
+            });
+        }
+
+
+
+
+
+        //insert code
+    </script>
+</head>
+<body>
+    <div data-role="page">
+        <div data-role="header">
+            <h1>Longhorn Bank Login</h1>
+         </div>
+
+        <div data-role="content">
+            <p>Email Address:</p>
+            <input type="text" id="email" />
+            <br />
+            <p>Password:</p>
+            <input type="password" id="password" />
+
+            <br />
+             <button id="testone" onclick="getLogin();">Login</button>
+            <br />
+            <br />
+            <ul id="outputtest"></ul>
+         </div>
+
+        </div>
+
+
+
+</body>
+</html>

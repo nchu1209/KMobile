@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="Web.css" rel="stylesheet" type="text/css"/>
+     <title>Longhorn Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+    <script type="text/javascript">
+
+        //onload = function () {
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "CustomersWebservice.asmx/GetCustomerNumber",
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            document.cookies = response.d;
+        //            $('#output').append(document.cookies)
+        //        }
+        //        });
+
+        //}
+
+        onload = function () {
+
+            var customerNumber = document.cookie;
+
+            $.ajax({
+                type: "POST",
+                url: "CustomersWebservice.asmx/GetAccounts",
+                data: "{'customerNumber': '" + escape(customerNumber) + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var bank = response.d;
+                    $('#output').empty();
+                    $.each(bank, function (index, account) {
+                            //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
+                            $('#output').append('<li> <a href="http://localhost:52941/ViewAccountTransactions.html?"' + account.AccountNumberReal+ '">' + account.AccountNumber + '</li> </a> <br/>');
+                            //window.location = "http://localhost:52941/ViewAccountTransactions.html"
+                            $('#output').append('<li>' + account.AccountName + '</li> <br/>');
+                            $('#output').append('<li>' + "$" + account.Balance.toFixed(2) + '</li> <br/><br/><br/>');
+                           
+                    });
+                    
+
+                    //add content
+
+                },
+                failure: function (msg) {
+                    //$('#outputtest').append("Please enter a valid email address")
+                    alert("error")
+                }
+
+            });
+        }
+
+
+        //Object.onclick = function getAccountNumber(){
+        //    var acctNum;
+        //    }
+
+    </script>
+
+    <!--<script src ="http://listjs.com/no-cdn/list.js"></script>-->
+
+</head>
+<body>
+    <div data-role="page">
+        <div data-role="header">
+            <h1>Customer Home</h1>
+        </div>
+
+       <!-- <div id="nav">
+            Accounts<br />
+            Stocks<br />
+        </div>-->
+
+        <div id="right">
+            <button id="stocks" onclick="location.href='http://localhost:52941/ViewStocks.html'">ViewStocks</button>
+       </div>
+        <div id="left">
+            <p>Bank Accounts:</p>
+        </div>
+
+        
+             <ul class ="list">
+
+        </ul>
+
+        <ul id="output"></ul>
+        
+        <input type ="hidden" name ="sessionAcctNumber" id="sessionAcctNumber" value ="" />
+        </div>
+       
+
+        
+
+</body>
+</html>

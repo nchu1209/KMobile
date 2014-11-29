@@ -1,0 +1,42 @@
+﻿body {
+
+}
+
+ul {
+    width: 1000px;
+}
+
+li {
+    display: inline-block;
+    float: left;
+}
+
+header {
+    background-color: #FF9933;
+}
+
+right {
+    float: right;
+    width: 15%;
+    position: relative;
+    
+}
+left {
+    float: left;
+    width: 75%;
+    position: relative;
+}
+
+footer {
+    text-align: center;
+    width: 99%;
+}
+
+nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height: 300px;
+    width: 100px;
+    float: left;
+    padding: 5px;
+}

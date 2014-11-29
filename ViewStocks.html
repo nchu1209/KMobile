@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     <link href="Web.css" rel="stylesheet" />
+     <title>Longhorn Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+    <script type="text/javascript">
+        function getStocks() {
+            var ticker = document.getElementById('search').value;
+            //alert(ticker);
+            $.ajax({
+                type: "POST",
+                url: "CustomersWebservice.asmx/GetStocks",
+                data: "{'ticker': '" + escape(ticker) + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var tickers = response.d;
+                    $('#output').empty();
+                    $.each(tickers, function (index, money) {
+                        //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
+                        $('#output').append('<li> <b>Stock Ticker:</b>  ' + money.StockTicker + '</li> <br/>');
+                        //window.location = "http://localhost:52941/ViewAccountTransactions.html"
+                        $('#output').append('<li> <b>Stock Name:</b>  ' + money.StockName + '</li> <br/>');
+                        $('#output').append('<li> <b>Price:  </b>' + "$" + money.Price + '</li> <br/><br/><br/>');
+
+                    });
+
+                    //add content
+
+                },
+                failure: function (msg) {
+                    //$('#outputtest').append("Please enter a valid email address")
+                    alert("error")
+                }
+
+            });
+        }
+
+     </script>
+
+    <style>
+        footer {
+    text-align: center;
+    width: 99%;
+}
+    </style>
+</head>
+<body>
+    <div data-role="header">
+        <h1>View Stocks</h1>
+        </div>
+        <br />
+        <input type="text" name="search" id="search" value="Search for Stocks Here!" style="text-align: center"/>
+       <br />
+       <button id="enter" onclick="getStocks()">Search</button>
+
+    <br />
+    <ul id="output"></ul>
+    <br />
+
+       <br />
+       <button id="home" onclick="location.href='http://localhost:52941/CustomerHome.html'">Back to Home</button>
+        <br />
+    <br />
+    <br />
+    <small>
+        Website Created by One or None, Ltd.
+        <br /> Group 3: Leah Carroll, Nicole Chu, Amy Enrione, Catherine King
+    </small>  
+    
+
+</body>
+</html>
