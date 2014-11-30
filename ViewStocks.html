@@ -8,8 +8,24 @@
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
     <script type="text/javascript">
+
+        onload = function () {
+            if (document.cookie.length !=5) {
+                window.location = "http://localhost:52941/LoginPage.html";
+                return;
+            }
+        }
+
         function getStocks() {
             var ticker = document.getElementById('search').value;
+            if (ticker === "") {
+                alert("Enter a stock ticker!")
+                return;
+            }
+            if (ticker === "Search for Stocks Here!") {
+                alert("Enter a stock ticker!")
+                return;
+            }
             //alert(ticker);
             $.ajax({
                 type: "POST",
@@ -19,8 +35,16 @@
                 dataType: "json",
                 success: function (response) {
                     var tickers = response.d;
+                    if (tickers.length === 0) {
+                        $('#output2').append("No stocks found for search '"+document.getElementById('search').value +"'");
+                        return;
+                    }
                     $('#output').empty();
                     $.each(tickers, function (index, money) {
+                        //if (money.StockTicker === "") {
+                        //    alert("none");
+                        //    return;
+                        //}
                         //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
                         $('#output').append('<li> <b>Stock Ticker:</b>  ' + money.StockTicker + '</li> <br/>');
                         //window.location = "http://localhost:52941/ViewAccountTransactions.html"
@@ -38,6 +62,17 @@
                 }
 
             });
+        }
+
+        function logout() {
+
+            var r = confirm("Do you really want to log out?");
+            if (r === true) {
+                var blank = "a";
+                document.cookie = blank;
+                window.location = 'LoginPage.html';
+
+            }
         }
 
      </script>
@@ -60,18 +95,26 @@
 
     <br />
     <ul id="output"></ul>
+
+
+    <ul id="output2"></ul>
+    
     <br />
 
        <br />
        <button id="home" onclick="location.href='http://localhost:52941/CustomerHome.html'">Back to Home</button>
         <br />
+    <button id="logout" onclick="logout();">
+        Logout
+    </button>
     <br />
     <br />
+    <footer>
     <small>
         Website Created by One or None, Ltd.
         <br /> Group 3: Leah Carroll, Nicole Chu, Amy Enrione, Catherine King
     </small>  
-    
+    </footer>
 
 </body>
 </html>

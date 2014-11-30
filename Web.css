@@ -30,6 +30,7 @@ left {
 footer {
     text-align: center;
     width: 99%;
+    clear:both;
 }
 
 nav {

@@ -24,7 +24,12 @@
         //}
 
         onload = function () {
+           
 
+            if (document.cookie.length != 5) {
+                    window.location = "http://localhost:52941/LoginPage.html";
+                    return;
+             }
             var customerNumber = document.cookie;
 
             $.ajax({
@@ -37,8 +42,14 @@
                     var bank = response.d;
                     $('#output').empty();
                     $.each(bank, function (index, account) {
-                            //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
-                            $('#output').append('<li> <a href="http://localhost:52941/ViewAccountTransactions.html?"' + account.AccountNumberReal+ '">' + account.AccountNumber + '</li> </a> <br/>');
+                        //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
+                        //alert(account.AccountNumberReal);
+                        var link = "http://localhost:52941/ViewAccountTransactions.html?" + btoa(account.AccountNumberReal);
+                        $('#output').append('<li> <a href="' + link + '">' + account.AccountNumber + '</a> </li> <br/>');
+
+                        //$('#output').append('<li> <a href="'+link+ '">' + account.AccountNumber + '</a> </li> <br/>');
+
+                        //$('#output').append('<li>' +document.getElementById(url).setAttribute("href",link)  + account.AccountNumber +  '</li> <br/>');
                             //window.location = "http://localhost:52941/ViewAccountTransactions.html"
                             $('#output').append('<li>' + account.AccountName + '</li> <br/>');
                             $('#output').append('<li>' + "$" + account.Balance.toFixed(2) + '</li> <br/><br/><br/>');
@@ -56,6 +67,28 @@
 
             });
         }
+
+
+
+        function logout() {
+           
+            var r = confirm("Do you really want to log out?");
+            if (r === true) {
+                var blank = "a";
+                document.cookie=blank;
+                window.location = 'LoginPage.html';
+                
+            }
+        }
+
+
+
+        //onbeforeunload = function () {
+        //    var blank = "a";
+        //    document.cookie = blank;
+        //    window.location = 'LoginPage.html';
+        //}
+
 
 
         //Object.onclick = function getAccountNumber(){
@@ -79,24 +112,32 @@
         </div>-->
 
         <div id="right">
-            <button id="stocks" onclick="location.href='http://localhost:52941/ViewStocks.html'">ViewStocks</button>
        </div>
         <div id="left">
             <p>Bank Accounts:</p>
         </div>
 
         
-             <ul class ="list">
+    <!--         <ul class ="list">
 
-        </ul>
+        </ul>-->
 
         <ul id="output"></ul>
-        
-        <input type ="hidden" name ="sessionAcctNumber" id="sessionAcctNumber" value ="" />
-        </div>
+        <button id="stocks" onclick="location.href='http://localhost:52941/ViewStocks.html'">View Stocks</button>
+        <br />
+        <button id="logout" onclick="logout();">Logout</button>
+
+        <!--<input type ="hidden" name ="sessionAcctNumber" id="sessionAcctNumber" value ="" />-->
        
-
+       
+    <!--<a id="url" href="#"> </a>-->
         
+    <footer>
 
+        Website Created by One or None, Ltd.
+        <br /> Group 3: Leah Carroll, Nicole Chu, Amy Enrione, Catherine King
+
+    </footer>
+         </div>
 </body>
 </html>

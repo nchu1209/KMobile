@@ -111,6 +111,11 @@ Public Class CustomersWebService
     Public Function CheckLoginFinal(email As String, password As String) As String
         DB.GetByEmail(email)
         Dim CNumber As String
+
+        If email = "" Or password = "" Then
+            CNumber = ""
+        End If
+
         If DB.CustDataset.Tables("tblCustomers").Rows.Count() > 0 Then
             If DB.CustDataset.Tables("tblCustomers").Rows(0).Item("Password").ToString = password Then
                 CNumber = DB.CustDataset.Tables("tblCustomers").Rows(0).Item("CustomerNumber").ToString
@@ -130,13 +135,18 @@ Public Class CustomersWebService
     Public Function LoginStructure(email As String, password As String) As List(Of Test)
         DB.GetByEmail(email)
         Dim Login As New List(Of Test)
+        Dim exam As New Test
+
+        If email = "" Or password = "" Then
+            exam.Correct = False
+        End If
 
         If DB.CustDataset.Tables("tblCustomers").Rows.Count() > 0 Then
             If DB.CustDataset.Tables("tblCustomers").Rows(0).Item("Password").ToString = password Then
 
                 Try
                     For i = 0 To DB.CustDataset.Tables("tblCustomers").Rows.Count() - 1
-                        Dim exam As New Test
+
                         exam.Correct = True
                         exam.CustomerNumber = DB.CustDataset.Tables("tblCustomers").Rows(i).Item("CustomerNumber").ToString
                         Login.Add(exam)

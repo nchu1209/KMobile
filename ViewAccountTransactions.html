@@ -9,45 +9,64 @@
     <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
     <script type="text/javascript">
 
-        //onload = function () {
-        //    alert("hello")
+        //function refresh() {
+        //    location.reload();
         //}
+      
 
         onload = function () {
 
-            //var accountNumber = document.cookie;
-           // alert(document.cookie);
-            var accountNumber = 1000000006;
+            if (document.cookie.length != 5) {
+                window.location = "http://localhost:52941/LoginPage.html";
+                return;
+            }
+          
+           
+                var accountNumber = atob(document.location.href.split('?')[1]);
+     
+                $.ajax({
+                    type: "POST",
+                    url: "CustomersWebservice.asmx/GetTransactions",
+                    data: "{'accountNumber': '" + escape(accountNumber) + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var listTr = response.d;
+                        if (listTr.length === 0) {
+                            $('#output2').append("No transactions found");
+                            return;
+                        }
+                        $('#output').empty();
+                        $.each(listTr, function (index, idk) {
+                            //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
+                            $('#output').append('<li> <b>Description:</b>  ' + idk.Description + '</li> <br/>');
+                            $('#output').append('<li> <b>Transaction Amount:</b>  ' + "$" + idk.TransactionAmount + '</li> <br/>');
+                            $('#output').append('<li> <b>Date:  </b>' + Date(idk.Date).slice(0,-32) + '</li> <br/><br/><br/>');
 
-            $.ajax({
-                type: "POST",
-                url: "CustomersWebservice.asmx/GetTransactions",
-                data: "{'accountNumber': '" + escape(accountNumber) + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var listTr = response.d;
-                    $('#output').empty();
-                    $.each(listTr, function (index, idk) {
-                        //var str = account.AccountNumber + " " + account.AccountName + " " + "$" + account.Balance.toFixed(2)
-                        $('#output').append('<li> <b>Description:</b>  ' + idk.Description + '</li> <br/>');
-                        //window.location = "http://localhost:52941/ViewAccountTransactions.html"
-                        $('#output').append('<li> <b>Transaction Amount:</b>  ' + "$" + idk.TransactionAmount + '</li> <br/>');
-                        $('#output').append('<li> <b>Date:  </b>' + Date(idk.Date).slice(0,-32) + '</li> <br/><br/><br/>');
+                        });
 
-                    });
+                        //add content
 
-                    //add content
+                    },
+                    failure: function () {
+                        //$('#outputtest').append("Please enter a valid email address")
+                        alert("error")
+                    }
 
-                },
-                failure: function (msg) {
-                    //$('#outputtest').append("Please enter a valid email address")
-                    alert("error")
-                }
-
-            });
+                });
+        
         }
 
+        function logout() {
+
+            var r = confirm("Do you really want to log out?");
+            if (r === true) {
+                var blank = "a";
+                document.cookie = blank;
+                window.location = 'LoginPage.html';
+
+            }
+        }
 
 
         </script>
@@ -55,14 +74,29 @@
 <body>
     <div data-role="header">
             <h1>View Transactions</h1>
-        </div>
+    </div>
         <div data-role="content">
             <p>Transactions:</p>
 
+             
             <ul id="output"></ul>
+            <ul id="output2"></ul>
             <br/>
             <button id="home" onclick="location.href='http://localhost:52941/CustomerHome.html'">Back to Home</button>
 
+            <br />
+            <button id="logout" onclick="logout();">
+                Logout
+            </button>
+            <br />
+
         </div>
+
+    <footer>
+    <small>
+        Website Created by One or None, Ltd.
+        <br /> Group 3: Leah Carroll, Nicole Chu, Amy Enrione, Catherine King
+    </small>  
+    </footer>
 </body>
 </html>

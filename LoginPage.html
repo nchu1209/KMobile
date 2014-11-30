@@ -1,44 +1,32 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+     <link href="Web.css" rel="stylesheet" />
      <title>Longhorn Bank</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
     <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
     <script type="text/javascript">
-        function getInfo() {
-            var email = document.getElementById("email").value;
-            $.ajax({
-                type: "POST",
-                url: "CustomersWebservice.asmx/LoginStructure",
-                data: "{'email': '" + escape(email) + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var Login = response.d;
-                    if(exam.Correct = true){
-                        $.each(Login, function(index, exam) {
-                            document.cookie = exam.CustomerNumber;
-                            $('#output').append(document.cookie);
-                        })
-                    };
-                    //add content
 
-                },
-                failure: function (msg) {
-                    //$('#outputtest').append("Please enter a valid email address")
-                    alert("error")
-                }
-
-            });
+        onload = function () {
+            document.cookie = ""
         }
-
    
         function getLogin() {
             var email = document.getElementById("email").value;
+            if (email === "") {
+                alert("Please login with a username and password.")
+                return;
+            }
+            
+
             //"victoria@aool.com"
             var password = document.getElementById("password").value;
+            if (password === "") {
+                alert("Please login with a username and password.")
+                return;
+            }
             //"nothing"
             $.ajax({
                 type: "POST",
@@ -50,7 +38,7 @@
                     var CNumber = response.d;
                     if (CNumber === "") {
                         alert("Incorrect username and password combination");
-
+                        return;
                     } else {
                         document.cookie = CNumber;
                         //document.write(CNumber);
@@ -81,7 +69,7 @@
         <div data-role="header">
             <h1>Longhorn Bank Login</h1>
          </div>
-
+          
         <div data-role="content">
             <p>Email Address:</p>
             <input type="text" id="email" />
@@ -92,13 +80,13 @@
             <br />
              <button id="testone" onclick="getLogin();">Login</button>
             <br />
-            <br />
-            <ul id="outputtest"></ul>
-         </div>
+             </div>
+      
 
-        </div>
-
-
-
+    <footer>
+        Website Created by One or None, Ltd.
+        <br /> Group 3: Leah Carroll, Nicole Chu, Amy Enrione, Catherine King
+    </footer>
+          </div>
 </body>
 </html>
