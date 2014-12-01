@@ -10,13 +10,20 @@
     <script type="text/javascript">
 
         onload = function () {
+
+            
             if (document.cookie.length !=5) {
                 window.location = "http://localhost:52941/LoginPage.html";
                 return;
+                
             }
+
+         
         }
 
         function getStocks() {
+            $('#output2').empty();
+            $('#output').empty();
             var ticker = document.getElementById('search').value;
             if (ticker === "") {
                 alert("Enter a stock ticker!")
